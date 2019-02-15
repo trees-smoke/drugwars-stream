@@ -66,17 +66,17 @@ const handleChar = op => {
 };
 
 const handleUpgrade = op => {
-  // player.getUpdateCharacter(op.username, character => {
-  //   if (character)
-  //     building.tryUpdateBuilding(character, op.building, null, result => {
-  //       if (result === 'success') {
-  //         socket.emit('refresh', op.username);
-  //         player.addXp(op.username, 5, result => {
-  //           if (result) console.log('[filter upgrade]', 'added xp ' +result)
-  //         });
-  //       } else console.log('[filter upgrade]', result);
-  //     });
-  // });
+  player.getUpdateCharacter(op.username, character => {
+    if (character)
+      building.tryUpdateBuilding(character, op.building, null, result => {
+        if (result === 'success') {
+          socket.emit('refresh', op.username);
+          player.addXp(op.username, 5, result => {
+            if (result) console.log('[filter upgrade]', 'added xp ' +result)
+          });
+        } else console.log('[filter upgrade]', result);
+      });
+  });
 };
 
 const handleUnit = op => {
@@ -100,26 +100,26 @@ const handleUnit = op => {
 };
 
 const handleHeist = payload => {
-  // if (!payload.username || !payload.amount) return;
+  if (!payload.username || !payload.amount) return;
 
-  // player.getUpdateCharacter(payload.username, character => {
-  //   if (character) {
-  //     if (character.drugs_balance >= payload.amount)
-  //       heist.addToPool(character, Number(payload.amount), result => {
-  //         if (result) {
-  //           console.log('[filter heist]', result);
-  //           socket.emit('refresh', payload.username);
-  //         } else {
-  //           log(`Failed to add to heist pool ${payload.amount} for @${payload.username}.`);
-  //         }
-  //       });
-  //     else {
-  //       console.log('[filter heist] not enough drugs to deposit to heist');
-  //     }
-  //   } else {
-  //     log(`Failed to add to heist pool ${payload.amount} for @${payload.username}.`);
-  //   }
-  // });
+  player.getUpdateCharacter(payload.username, character => {
+    if (character) {
+      if (character.drugs_balance >= payload.amount)
+        heist.addToPool(character, Number(payload.amount), result => {
+          if (result) {
+            console.log('[filter heist]', result);
+            socket.emit('refresh', payload.username);
+          } else {
+            log(`Failed to add to heist pool ${payload.amount} for @${payload.username}.`);
+          }
+        });
+      else {
+        console.log('[filter heist] not enough drugs to deposit to heist');
+      }
+    } else {
+      log(`Failed to add to heist pool ${payload.amount} for @${payload.username}.`);
+    }
+  });
 };
 
 const handleTransfer = payload => {
