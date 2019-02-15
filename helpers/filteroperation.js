@@ -50,6 +50,7 @@ const socket = new io.connect('https://websocket-drugwars.herokuapp.com/');
 //     console.log('[filter attack] user cant attack himself');
 //   }
 // };
+
 const handleChar = op => {
   player.checkIfExist(op.username, exist => {
     if (!exist) {
@@ -79,23 +80,23 @@ const handleUpgrade = op => {
 };
 
 const handleUnit = op => {
-  // player.getUpdateCharacter(op.username, character => {
-  //   if (character) {
-  //     if (!op.unit || !op.unit_amount || op.unit_amount < 1) {
-  //       const reason = 'cant buy 0 unit';
-  //       pool.refund(op, reason, result => {
-  //         if (result) console.log('[filter unit]', result);
-  //       });
-  //     }
-  //     unit.tryAddUnit(character, op.unit, op.unit_amount, null, result => {
-  //       if (result === 'success') {
-  //         player.addXp(op.username, 5, result => {
-  //           if (result) socket.emit('refresh', op.username);
-  //         });
-  //       } else console.log('[filter unit]', result);
-  //     });
-  //   }
-  // });
+  player.getUpdateCharacter(op.username, character => {
+    if (character) {
+      if (!op.unit || !op.unit_amount || op.unit_amount < 1) {
+        const reason = 'cant buy 0 unit';
+        pool.refund(op, reason, result => {
+          if (result) console.log('[filter unit]', result);
+        });
+      }
+      unit.tryAddUnit(character, op.unit, op.unit_amount, null, result => {
+        if (result === 'success') {
+          player.addXp(op.username, 5, result => {
+            if (result) socket.emit('refresh', op.username);
+          });
+        } else console.log('[filter unit]', result);
+      });
+    }
+  });
 };
 
 const handleHeist = payload => {
@@ -194,7 +195,7 @@ const handleTransfer = payload => {
 const filter = tx => {
   tx.operations.forEach(op => {
     const [type, payload] = op;
-
+    console.log(op)
     switch (type) {
       case 'custom_json': {
         let json = {};
@@ -203,7 +204,7 @@ const filter = tx => {
         } catch (e) {
           // console.log('Failed to parse custom_json json field', e);
         }
-
+        json.username = payload.required_posting_auths[0]
         switch (payload.id) {
           // case 'dw-attack': {
           //   handleAttack(json, tx);
