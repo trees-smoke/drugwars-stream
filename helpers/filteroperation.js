@@ -195,7 +195,6 @@ const handleTransfer = payload => {
 const filter = tx => {
   tx.operations.forEach(op => {
     const [type, payload] = op;
-    console.log(op)
     switch (type) {
       case 'custom_json': {
         let json = {};
