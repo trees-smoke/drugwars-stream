@@ -137,7 +137,7 @@ const player_handler = {
     });
   },
   setReferrer(username, referee, cb) {
-    const query = `UPDATE users SET referrer=${referee} WHERE username='${username}'`;
+    const query = `UPDATE users SET referrer='${referee}' WHERE username='${username}'`;
     db.query(query, (err, result) => {
       if (err) {
         console.error('[player]', err);
