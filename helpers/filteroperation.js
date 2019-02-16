@@ -122,6 +122,17 @@ const handleHeist = payload => {
   });
 };
 
+const handleReferral = op => {
+  player.getUpdateCharacter(op.username, character => {
+    if (character)
+      player.setReferrer(op.username, op.referee, null, result => {
+        if (result === 'success') {
+          socket.emit('refresh', op.username);
+        } else console.log('[filter upgrade]', result);
+      });
+  });
+};
+
 const handleTransfer = payload => {
   if (parseFloat(payload.amount) > 10) {
     log(`**@${payload.from}** just sent **${payload.amount}**`);
@@ -223,6 +234,10 @@ const filter = tx => {
           }
           case 'dw-heist': {
             handleHeist(json, tx);
+            break;
+          }
+          case 'dw-referral': {
+            handleReferral(json, tx);
             break;
           }
           default: {

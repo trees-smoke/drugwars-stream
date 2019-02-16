@@ -136,6 +136,18 @@ const player_handler = {
       }
     });
   },
+  setReferrer(username, referee, cb) {
+    const query = `UPDATE users SET referrer=${referee} WHERE username='${username}'`;
+    db.query(query, (err, result) => {
+      if (err) {
+        console.error('[player]', err);
+        cb(null);
+      } else {
+        console.log(`[player] Upgraded referrer for : ${username}`);
+        cb(true);
+      }
+    });
+  },
   checkArmy(username, army, cb) {
     const query = 'SELECT * FROM users_units WHERE username = ?';
     db.query(query, [username], (err, result) => {
