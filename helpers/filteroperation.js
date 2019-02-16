@@ -125,11 +125,15 @@ const handleHeist = payload => {
 const handleReferral = op => {
   player.getUpdateCharacter(op.username, character => {
     if (character)
-      player.setReferrer(op.username, op.referee, null, result => {
+    player.checkIfExist(op.referrer, exist => {
+      if(exist)
+      player.setReferrer(op.username, op.referrer, null, result => {
         if (result === 'success') {
           socket.emit('refresh', op.username);
-        } else console.log('[filter upgrade]', result);
+        } else console.log('[filter referrer]', `${op.referrer} doesnt exist and cant be a referrer`);
       });
+    })
+    else console.log('[filter referrer]', `${op.username} doesnt exist as user`);
   });
 };
 
