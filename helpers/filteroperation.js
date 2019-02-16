@@ -127,7 +127,7 @@ const handleReferral = op => {
     if (character)
     player.checkIfExist(op.referrer, exist => {
       if(exist)
-      player.setReferrer(op.username, op.referrer, null, result => {
+      player.setReferrer(op.username, op.referrer, result => {
         if (result === 'success') {
           socket.emit('refresh', op.username);
         } else console.log('[filter referrer]', `${op.referrer} doesnt exist and cant be a referrer`);
