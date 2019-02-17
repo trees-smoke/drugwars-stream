@@ -17,7 +17,7 @@ const unit_handler = {
         } else {
           // CHOOSE THE PLACEHOLDER
           const unit_placeholder = units.filter(item => item.id === unit_name)[0];
-          if (!unit_placeholder) return cb('Unit not recognized', unit_name);
+          if (!unit_placeholder || !unit_amount) return cb('Unit or amount not recognized', unit_name);
           const now = new Date();
           // CHECK FOR TRAINING FACILITY
           const training_facility = character_buildings.filter(
@@ -26,7 +26,7 @@ const unit_handler = {
           if (!training_facility && !training_facility.lvl < 1) {
             return cb('training facility to low');
           }
-          if (unit_placeholder) {
+          if (unit_placeholder && unit_amount>0) {
             if (character_units.filter(item => item.unit === unit_name)[0]) {
               const unit = character_units.filter(item => item.unit === unit_name);
               var next_update = new Date(Date.parse(unit[0].next_update));
