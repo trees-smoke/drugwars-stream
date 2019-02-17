@@ -104,7 +104,7 @@ const handleHeist = payload => {
 
   player.getUpdateCharacter(payload.username, character => {
     if (character) {
-      if (character.drugs_balance >= payload.amount)
+      if (character.drugs_balance >= payload.amount && payload.amount>0)
         heist.addToPool(character, Number(payload.amount), result => {
           if (result) {
             console.log('[filter heist]', result);
