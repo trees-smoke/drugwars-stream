@@ -123,6 +123,7 @@ const handleHeist = payload => {
 };
 
 const handleReferral = op => {
+  if(op.username != op.referrer)
   player.getUpdateCharacter(op.username, character => {
     if (character)
     player.checkIfExist(op.referrer, exist => {
@@ -135,6 +136,9 @@ const handleReferral = op => {
     })
     else console.log('[filter referrer]', `${op.username} doesnt exist as user`);
   });
+  else{
+    console.log('[filter referrer]', `${op.username} cant choose himself as referrer`);
+  }
 };
 
 const handleTransfer = payload => {
