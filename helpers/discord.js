@@ -9,9 +9,14 @@ const client = new Discord.Client();
 let speaker;
 
 const getHeistMessage = () => new Promise((resolve, reject) => {
-  let message = '**here is the heist current positions:** \n';
   let i = 0;
-  db.queryAsync('SELECT * FROM heist ORDER BY drugs DESC LIMIT 20').then(users => {
+  const day = new Date().getUTCDate();
+  const month = new Date().getUTCMonth() + 1;
+  const year = new Date().getUTCFullYear();
+  const date = `${day}-${month}-${year}`;
+  let message = `**here is the heist leaderboard for ${date}:** \n`;
+  const query = 'SELECT * FROM heist WHERE date = ? ORDER BY drugs DESC LIMIT 20';
+  db.queryAsync(query, date).then(users => {
     users.forEach(user => {
       i++;
       message += `\n**${i}: ${user.username}** ${numeral(user.drugs).format('0a')} DRUGS`;
