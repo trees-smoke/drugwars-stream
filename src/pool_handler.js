@@ -2,7 +2,7 @@ const { PrivateKey } = require('dsteem');
 const client = require('../helpers/client');
 
 const send = (op, cb) => {
-  let amount = op.amount.split(' ')[0];
+  let amount = parseFloat(op.amount);
   amount = (amount / 100) * 80;
   amount = parseFloat(amount).toFixed(3);
   const transfer = amount.concat(' ', 'STEEM');
@@ -24,7 +24,7 @@ const send = (op, cb) => {
 };
 
 const refund = (op, reason, cb) => {
-  let amount = op.amount.split(' ')[0];
+  let amount = parseFloat(op.amount);
   amount = parseFloat(amount).toFixed(3);
   const transfer = amount.concat(' ', 'STEEM');
   const transf = {};
