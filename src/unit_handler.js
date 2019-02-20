@@ -23,7 +23,7 @@ const unit_handler = {
           const training_facility = character_buildings.filter(
             item => item.building === 'training_facility',
           )[0];
-          if (!training_facility || !training_facility.lvl < 1) {
+          if (!training_facility || !training_facility.lvl) {
             return cb('training facility to low');
           }
           if (unit_placeholder && unit_amount>0) {
